@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>POEntry -- Company login</title>
+<link rel="stylesheet" href="bootstrap-3.0.3/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/explore.css" />
+<link rel="stylesheet" href="font-awesome-4.0.3/css/font-awesome.min.css" />
+</head>
+
+<body>
+	<div class="container">
+			<div class="row">
+				<div id="hdr-row" class="col-lg-12">
+					<div class="place-holder" include-file="eztrack-hdr.html"></div>
+				</div>
+			</div><br/><br/><br/>
+			<div class="row">
+				<div class="col-lg-12 col-md-12 col-sm-12">
+
+					<div id="login" class="cpanel cpanel-info shadow" >
+						
+						<div class="cpanel-body">
+							<div class="form-horizontal" role="form">
+								<div class="form-group">
+									<label for="user-name" class="col-sm-3 control-label">Login ID</label>
+									<div class="col-sm-8 ">
+										<input type="password" class="form-control" id="user-name" placeholder="Login ID">
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-offset-3 col-sm-8" style='text-align: center'>
+										<p id='err_msg' style='color:red'></p>
+									</div>	
+								</div>
+								<div class='button-div' style='text-align:center'>
+								<div class="form-group">
+									<div class="col-sm-offset-3 col-sm-8" style='text-align: center'>
+										<button id="sign-in" type="button" class="btn btn-primary">
+											 <!-- i class="fa fa-spinner fa-spin"> </i> --> Sign In
+										</button>
+									</div>
+								</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+</body>
+<script src="js/jquery-2.0.3.min.js"></script>
+<script src="js/recursiveLoader.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script>
+
+	if($.cookie("companyname") == "" || $.cookie("companyname") == null || $.cookie("companydb") == "" || $.cookie("companydb") == null){
+		window.location.href = '/poentry/index.html';
+	}
+	else{
+		/* $(".cpanel-heading").html($.cookie("companyname")+"  Login") */
+	}
+	$("#user-name").focus();
+	$('#user-name').keypress(function(e) {
+        if (e.keyCode == 13) {
+        	signin();
+            
+        }
+	});
+	loadTree($(".place-holder"));
+   	//centerLogin($("#login"));
+   	
+   	function serializeData() {
+			var json = new Object();
+			json.user = $("#user-name").val();
+			json.companydb = $.cookie('companydb');
+			return json; //JSON.stringify(data);
+		}
+
+	function centerLogin(element) {
+		//var loginWidth = element.width();
+		var loginHeight = element.height();
+		//var winWidth = $(document).width();
+		var winHeight = $(document).height();
+		
+		//var loginLeft = (winWidth - loginWidth)/2;
+		var loginTop = (winHeight - loginHeight)/2 - 40;
+		//element.css("left", loginLeft + "px");
+		element.css ({
+			position: "relative",
+			top: loginTop + "px"
+		});
+		
+	}
+	
+	$("#sign-in").click(function(){
+		
+		signin();
+		
+	});
+	function signin(){
+		
+		var json = serializeData();
+		$.ajax({
+			url : "/poentry/SalesagentServlet?opcode=6",
+			async: false,		
+			//url: "http://127.0.0.1:8090/eazytrack/EzTrackServlet?opcode=0",
+			type : "POST",
+			dataType : "json",
+			timeout : 30000, // half-a-minute for login
+			data : { data: JSON.stringify(json) }, 
+			success : function(data) {
+				if(data.response_code != 0){
+					$.cookie('loginname', data.loginname);
+					$.cookie('isexecutive', data.isexecutive);
+					$.cookie('stockvisibility', data.stockvisibility);
+					$.cookie('pricelevel', data.pricelevel);
+					location.href='/poentry/order.html';
+					
+				}else{
+					console.log("invalid sign in")
+					$("#err_msg").html("Invalid Login ID ! ");
+					return;
+				}
+
+			},
+			error : function() {
+
+			}
+		}); 
+	}
+	
+</script>
+
+</html>

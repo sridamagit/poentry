@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>POEntry --Index</title>
+<link rel="stylesheet" href="bootstrap-3.0.3/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/explore.css" />
+<link rel="stylesheet" href="typeahead/css/typeahead-bootstrap.css" />
+<link rel="stylesheet"
+	href="font-awesome-4.0.3/css/font-awesome.min.css" />
+</head>
+<style>
+@media ( max-width : 420px) {
+	#login {
+		width: 90%;
+		padding: 0;
+	}
+}
+.tt-dropdown-menu{
+height: 200px;
+overflow-y: auto; 
+}
+.darkblue{
+color: #5B9BD5 !important;
+}
+.darkblueinp{
+	color: #fff;
+}
+.darkgreen{
+background-color: #5B9BD5 !important;
+}
+#item-name, #cust-name{
+color: #5B9BD5 !important;
+}
+.twitter-typeahead{
+width:100%
+}
+select option{
+	color: #5B9BD5; 
+}.btn-primary{
+    color: #5B9BD5 !important;
+    background-color: #fff !important;
+    border-color: #357ebd !important;
+    font-weight: bold !important;
+}
+</style>
+<body>
+	<div class='container'>
+		<div class='row'>
+			<div id="hdr-row" class="col-lg-12">
+				<div class="place-holder" include-file="eztrack-hdr.html"></div>
+			</div>
+		</div>
+		<br /> <br /><br/>
+		<div class='row'>
+
+			<div id="new-sale" class="cpanel shadow cpanel-info">
+				<div class="cpanel-heading">
+					Customer Purchase Order <a href="#" class="panel-close"></a>
+					<!-- <i class="fa fa-floppy-o pull-right"></i>
+		<i class="fa fa-print pull-right"></i> -->
+				</div>
+				<div class="cpanel-body">
+
+					<br>
+					<div>
+						<div id="cust-bill-block" class='darkblue'>
+							<i class="fa fa-user"></i> Customer Order Details: <a
+								id="cust-details" href="#"></a>
+						</div>
+						<div id="cust-bill-ext">
+							<div class="form-group">
+								<label for="brcode" class="col-sm-2 control-label darkblue">Choose
+									Customer</label>
+								<div id='customerdiv' class="col-sm-6">
+									<!-- <input type="password" class="form-control" id="password" placeholder="Password"> -->
+									<input id="cust-name" class="form-control desc darkblue" placeholder='Type Customer Name' style="width:100%"></input>
+								</div>
+								<span id="priceleveldiv" style="display:none">
+								<label for="brcode" class="col-sm-2 control-label darkblue">Price Level</label>
+								<div id='customerdiv' class="col-sm-2">
+									<!-- <input type="password" class="form-control" id="password" placeholder="Password"> -->
+									<div class="col-sm-10">
+									<input id="price-level" class="form-control desc darkblue" disabled style="width:100%"></input>
+									<select id="price-level-combo" class="form-control desc darkblue"  style="width:100%"></select>
+									</div>
+									<div class="col-sm-2">
+									<button id="reload"  style="color: #5B9BD5 !important;
+    background-color: #fff !important;
+    border-color: #357ebd !important;
+    font-weight: bold !important;">reload</button>
+									</div>
+									
+								</span>
+								</div>
+								
+							</div>
+							
+							
+
+						</div>
+						<br>
+						<div>
+							<a href="#" id="add-item-row" class="pull-right"><i
+								class="fa fa-plus-circle fa-6"> </i></a>
+						</div>
+						<table id="item-details"
+							class="table table-bordered table-condensed">
+							<thead>
+								<tr>
+									<th class='darkgreen'></th>
+									<th class='darkgreen'>#</th>
+									<th class='darkgreen' width="60%">Item Particulars</th>
+									<th class='darkgreen' width="5%" class="align-right">Quantity</th>
+									<th class='darkgreen' width="5%" style="text-align: center;">Rate</th>
+									<th class="right-align darkgreen" width="10%">Amount</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="delete "><a href="#"><i
+											class="fa fa-trash-o idle"> </i></a></td>
+									<td class="sl-no td-input darkblueinp">1</td>
+									<td class="desc td-input darkblue"><input id="item-name"
+										style="width: 100%" placeholder='Type Item Name'/></td>
+									<td class="qty right-align td-input darkblue"><input
+										class="right-align darkblue" align="right" type="number" /></td>
+									<td class="rate right-align darkblueinp"></td>
+									<td class="amount right-align darkblueinp"></td>
+								</tr>
+							</tbody>
+
+							<tfoot>
+								<tr class="footer">
+									<td colspan="3" class="right-align">Total:</td>
+
+									<td id="qty-total" class="right-align"></td>
+									<td></td>
+									<td id="tot_mrp" class="right-align"></td>
+
+								</tr>
+						</table>
+						
+								<label for="notes" class="darkblue">Notes</label>
+								<input id="notes" class="darkblue pull-right" maxlength="50" placeholder='Type Notes Here' style="width:80%" ></input>
+								
+							
+						<hr>
+						<div>
+							<a href="#" id="add-item-row"><i
+								class="fa fa-plus-circle fa-6 darkblue"> </i>Add new item</a>
+						</div>
+						<div class='button-div' style='text-align:center'>
+							<button type="button" id="save-new-sale"
+								class="btn btn-primary btn-sm "><b>Save</b></button>
+							<button type="button" id="cancel"
+								class="btn btn-default btn-sm" id='cancel'>Cancel</button>
+						</div>
+						<div class="clearfix"></div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script src="js/jquery-2.0.3.min.js"></script>
+<script src="js/recursiveLoader.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script src="js/utils.js"></script>
+<script src="hogan.js-master/web/builds/2.0.0/hogan-2.0.0.js"></script>
+<script src="typeahead/js/typeahead.min.js"></script>
+<script src="js/new-sale.js"></script>
+<script>
+	$(function(){
+		if($.cookie("pricelevelactive") == "Yes"){
+			$("#priceleveldiv").show();
+		}
+		$("#price-level-combo").hide();
+		if($.cookie('isexecutive') == 'No'){
+			$('#customerdiv').html("<input id='cust-name' style='font-size:16px;width:100%' readonly value='"+$.cookie('loginname')+"'/>");
+			$("#item-name").focus();
+			$("#price-level").val($.cookie('pricelevel'));
+			$("#reload").hide();
+			if($("#price-level").val() == "" || $("#price-level").val() == null){
+				// show price level combo
+				$("#price-level").hide();
+				$("#price-level-combo").show();
+				var json = new Object();
+				json.companydb = $.cookie("companydb");
+				$.ajax({
+					url : "/poentry/SalesagentServlet?opcode=11",
+					//url: "http://127.0.0.1:8090/eazytrack/EzTrackServlet?opcode=0",
+					type : "POST",
+					dataType : "json",
+					timeout : 30000, // half-a-minute for login
+					data : { data: JSON.stringify(json) },
+					success : function(data) {
+						var html = "<option>Select Price Level</option>";
+						console.log(data.salesleds);
+						for(var i=0; i< data.salesleds.length; i++){
+							console.log(data.salesleds[i]);
+							html += "<option>"+data.salesleds[i]["name"]+"</option>";
+						}
+						$("#price-level-combo").html(html);
+
+					},
+					error : function() {
+
+					}
+				});
+			}else{
+				bindTypeAhead($("#item-name"));
+			}
+		}else{
+			$("#cust-name").focus();
+		}
+		
+		$("#cancel").on("click", function(){
+			location.href= '/poentry/order.html';
+		});
+	});
+	
+    $("#price-level-combo").on("change", function(){
+    	bindTypeAhead($("#item-name"));
+    	$("#price-level-combo").attr("disabled","disabled");
+    	$("#reload").show();
+    });
+    $('#reload').click(function() {
+        location.reload();
+    });
+	$("a#add-item-row").click(function(e) {
+
+		addNewRow();
+	});
+
+	loadTree($(".place-holder"));
+
+	$("table#item-details tbody")
+			.delegate(
+					"td.qty input",
+					"change",
+					function() {
+						//alert("Hiiii");
+						console.log("Am I executing???");
+
+						$(this).removeClass("red-border");
+
+						// Allow the input if and only if it is less than available stock.
+						var quantity = parseInt($(this).val());
+						var stock = parseInt($(this).parents("tr").data(
+								"item-info").qty);
+
+						var branch = $.cookie("brCode");
+						var availqty = $.cookie("availqty");
+						if (availqty < parseInt($(this).val())) {
+							alert("Entered quantity is greater than available stock of "
+									+ stock + "!");
+							$(this).val("");
+							$(this).select();
+							$(this).addClass("red-border");
+							return;
+						} else if (quantity < 1) {
+							alert("Entered quantity should not be zero ");
+							showMessage("A payment method must be selected for this invoce!");
+						} else {
+							removeMessage();
+							$(".qty").removeClass("red-border");
+						}
+						updateRow($(this).parents("tr"));
+
+					});
+
+	$("table#item-details tbody")
+			.delegate(
+					"td.qty input",
+					"keyup",
+					function(e) {
+						e.preventDefault();
+						var quantity = parseInt($(this).val());
+						var stock = parseInt($(this).parents("tr").data(
+								"item-info").qty);
+						console
+								.log("Why the bloody hell, I am not executing???");
+						//debugger ;
+						if ($(this).attr('ext') == "true") {
+							$(this).removeAttr('ext');
+							return;
+						}
+						console.log("which is" + e.which)
+						if (e.which == 13 || e.which == 9) {
+							addNewRow();
+							// if we are on the last row, then add a new row.
+							if ($(this).closest("tr").is(":last-child")
+									&& $(this).closest("tr").find(
+											"td.desc input:last").val() != "") {
+
+								// Allow the input if and only if it is less than available stock.
+								var quantity = parseInt($(this).val());
+								var stock = parseInt($(this).parents("tr")
+										.data("item-info").qty);
+								if (quantity > stock) {
+									return;
+								}
+								if (quantity >= 1) {
+									var rows = $("#item-details tbody tr");
+									if (rows.length > 1) {
+										/* for (var i = 0; i < rows.length - 1; i++) {
+											if ($(this).parents("tr").data(
+													"item-info").name == $(
+													rows[i]).data("item-info").name) {
+												//	row.find("td.desc input.desc").val('');
+												$(rows[i]).find("td.qty input")
+												/* 	.focus();
+												alert('Item  Already present');
+												$(this).parents("tr").remove();// Removes the duplicate row
+												updateTotals();
+												$(rows[i]).find("td qty")
+												 .focus(); 
+
+												return;
+											}
+										} */
+
+									} // end of if
+
+								}
+							}
+							
+							$(
+									"table#item-details tbody tr:last-child td.desc input")
+									.focus();
+						}
+					});
+	$("#item-details tbody").delegate("tr td.delete a", "click", function() {
+		//if there is only one row, no delete.
+		debugger;
+		if ($("#item-details tbody tr").length == 1) {
+			alert("At least one item row must be present.");
+			return;
+		}
+		var result = confirm("Do you want to delete this row?");
+		if (result == true) {
+			$(this).parents("tr").remove();
+			updateSlno();
+			updateTotals();
+		} else {
+
+		}
+	});
+	if ($.cookie("companyname") == "" || $.cookie("companyname") == null
+			|| $.cookie("companydb") == "" || $.cookie("companydb") == null) {
+		window.location.href = '/poentry/index.html';
+	} else {
+		if($.cookie('isexecutive') == 'Yes'){
+		
+		bindCustomerTypeahead($("#cust-name"));
+	
+		}
+		//sales ledgers
+/* 		$.ajax({
+			url : "/saleagent/SalesagentServlet?opcode=3",
+			//url: "http://127.0.0.1:8090/eazytrack/EzTrackServlet?opcode=0",
+			type : "POST",
+			dataType : "json",
+			timeout : 30000, // half-a-minute for login
+			data : {
+				data : JSON.stringify(json)
+			},
+			success : function(data) {
+				var html = "";
+				var salesledgers = data.salesleds;
+				for (var i = 0; i < salesledgers.length; i++) {
+					html += "<option value='"+JSON.stringify(salesledgers[i])+"'>"
+							+ salesledgers[i].name + "</option>";
+				}
+				$("#salesled-name").html(html);
+
+			},
+			error : function() {
+
+			}
+		});
+ */	}
+	
+	function serializeData() {
+		var json = new Object();
+		json.companydb = $.cookie("companydb");
+
+		return json; //JSON.stringify(data);
+	}
+	function centerLogin(element) {
+		//var loginWidth = element.width();
+		var loginHeight = element.height();
+		//var winWidth = $(document).width();
+		var winHeight = $(document).height();
+
+		//var loginLeft = (winWidth - loginWidth)/2;
+		var loginTop = (winHeight - loginHeight) / 2 - 50;
+		//element.css("left", loginLeft + "px");
+		element.css({
+			position : "relative",
+			top : loginTop + "px"
+		});
+
+	}
+	/////////////////////////////////////////////////////////////
+	$("#save-new-sale").on("click", function() {
+			if (!validateForm()) {
+				return;
+			}
+			var data = prepareSaleJson('save'); // specifying action as save
+			submitSaleData(data);
+	});
+	
+	function validateForm() {
+		debugger;
+		console.log("Executing validation.... ");
+		var valid = true;
+		// Start with customer name
+		if ($("#cust-name").val() == "") {
+			showMessage("Missing Customer Name!", "danger", true);
+			$("#cust-name").addClass("red-border");
+			valid = false;
+
+		}
+		$("#item-details tbody tr td input[ type = number ]").each(function() {
+			var value = parseInt($(this).val());
+			if (value < 0) {
+				$(this).addClass("red-border");
+				valid = false;
+			}
+		});
+
+		$("#item-details tbody tr td ").each(function() {
+			var value = parseInt($(this).text());
+			if (value < 0) {
+				$(this).addClass("red-border");
+				valid = false;
+			}
+		});
+
+		
+
+		var rows = $("#item-details tbody tr");
+		for ( var i = 0; i < rows.length; i++) {
+			var itemData = $(rows[i]).find("td.desc input.desc");
+			var itemQty = $(rows[i]).find("td.qty input");
+			var itemRate = $(rows[i]).find("td.rate").text();
+			var itemAmount = $(rows[i]).find("td.amount").text();
+
+			if (itemData.val() == "" && i != rows.length - 1) {
+				itemData.parents("td").addClass("red-border");
+			}
+			if ((itemQty.val() == "" || isNaN(itemQty.val()) == true)
+					&& i != rows.length - 1) {
+				//itemQty.parents("td").addClass("red-border");
+				itemQty.addClass("red-border");
+			}
+		}
+
+		if (valid)
+			removeMessage();
+		return valid;
+	}
+
+	
+</script>
+
+</html>

@@ -1,0 +1,120 @@
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> 
+
+</head>
+
+<div class="product-hdr">
+<marquee scrollamount="1.8">
+	<img class="img-logo" src="images/poentry.jpg" height="70" />
+	<div id='product-title' class="product-title" style='padding:20px'>
+		Online Purchase Order Entry
+	</div>
+	<div id='clock' class='pull-right product-title' style='padding:20px'>Jaydeep</div>
+</marquee>	
+</div>
+
+<div style="display:flex;border: 1px solid #3276b1;background:#5B9BD5;color:#5B9BD5;">
+		<div style="width:25%">
+			<a style="font-size:16px" href="/poentry/order.html">Purchase Order</a>
+		</div> 
+		<div  style="width:25%">
+			<a style="font-size:16px" class='16pxfont' href="/poentry/ledgeraccount.html">Ledger Account</a>
+		</div>
+		<div  style="width:25%">
+			<a style="font-size:16px" href="/poentry/billwise.html">BillWise Details</a>
+		</div>
+
+	
+	
+	<ul class="dropdown-menu pull-right" style="border: 1px solid #3276b1;background:#5B9BD5;color:#5B9BD5;width:25%">
+		<li>
+			<a  id="signout"><i class="fa fa-sign-out"></i>Logout</a>
+		</li>
+	</ul>
+
+</div>	
+
+
+	<style>
+	.dropdown-menu > li > a > .fa :hover  {
+	color:black;
+	}
+</style>
+<script>
+$("#signout").on("click", function(){
+	deleteAllCookies()
+	location.href = "index.html";
+})
+function deleteAllCookies() {
+    var cookies = document.cookie.split(";");
+	console.log(cookies);
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i];
+        var eqPos = cookie.indexOf("=");
+        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+}
+if($.cookie("companyname") == "" || $.cookie("companyname") == null || $.cookie("companydb") == "" || $.cookie("companydb") == null){
+	$(".btn-group").hide();
+	$(".dropdown-menu").hide();
+}
+else{
+	//$("#hdr-companyname").html($.cookie("companyname"));
+	$("#product-title").html($.cookie("companyname")+" - Online Purchase Order Entry");
+	$(".dropdown-menu").show();
+	
+}
+
+
+
+
+var myClock = $("#clock");
+function today() {
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth() + 1;
+	//January is 0!
+
+	var yyyy = today.getFullYear();
+	if (dd < 10) {
+		dd = '0' + dd;
+	}
+	if (mm < 10) {
+		mm = '0' + mm;
+	}
+	//today = mm + '/' + dd + '/' + yyyy;
+	today = dd + "/" + mm + "/" + yyyy;
+	return today;
+}
+function renderTime () {
+    var currentTime = new Date();
+    var d = today();
+    var h = currentTime.getHours();
+    var m = currentTime.getMinutes();
+    var s = currentTime.getSeconds();
+
+    if (h < 10) {
+        h = "0" + h;
+    }
+
+
+    if (m < 10) {
+        m = "0" + m;
+    }
+
+
+    if (s < 10) {
+        s = "0" + s;
+    }
+
+    //myClock.textContent = h + ":" + m + ":" + s;
+    $("#clock").html(d+ "  " +h + ":" + m + ":" + s);
+
+    setTimeout(renderTime, 1000);
+    
+}
+renderTime();
+</script>
+
+
